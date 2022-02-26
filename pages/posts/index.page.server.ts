@@ -17,5 +17,5 @@ export const onBeforeRender = async (pageContext: PageContext) => {
 
 export const prerender = async () => {
   const mds = await listMd();
-  return mds.map((md) => `/posts/${md.name}`);
+  return mds.map((md) => `/posts/${encodeURIComponent(md.name)}`);
 };
