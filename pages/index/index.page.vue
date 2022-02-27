@@ -6,7 +6,7 @@
     <n-h2 :class="$style.title" style="margin-top: 16px"> 把信拿去吧，你可以假戏真做。</n-h2>
   </div>
   <Container>
-    <PostList :md-list="props.mdList" />
+    <PostList :md-list="props.mdList" id="postList" />
   </Container>
 </template>
 

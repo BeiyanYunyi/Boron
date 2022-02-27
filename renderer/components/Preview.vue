@@ -1,7 +1,7 @@
 <template>
   <Container max-width="768px">
     <n-h1 prefix="bar">{{ props.mdMeta.title }}</n-h1>
-    <n-text tag="div">
+    <n-text tag="div" id="ssr-md-container">
       <div v-if="props?.htmlStr" v-html="props.htmlStr" :class="$style.md" />
     </n-text>
   </Container>
@@ -20,6 +20,10 @@ const props = defineProps<{ htmlStr: string; mdMeta: IMdMeta }>();
   font-family: 'quote', 'Helvetica Neue', 'Luxi Sans', 'DejaVu Sans', 'Hiragino Sans GB',
     'Microsoft Yahei', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji',
     'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols';
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.md div {
 }
 .md blockquote {
   border-left: 4px solid rgb(224, 224, 230);
