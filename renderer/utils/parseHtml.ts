@@ -1,6 +1,5 @@
 import { defineComponent, h } from 'vue';
-import { NH1, NH2, NH3, NH4, NH5, NH6, NBlockquote, NP, NCode, NScrollbar, NA } from 'naive-ui';
-import hljs from 'highlight.js';
+import { NH1, NH2, NH3, NH4, NH5, NH6, NBlockquote, NP, NText, NScrollbar, NA } from 'naive-ui';
 import TextSlot from '../components/TextSlot.vue';
 
 const render: (nodeList: Node) => any = (nodeList) => {
@@ -25,37 +24,25 @@ const render: (nodeList: Node) => any = (nodeList) => {
     case 'BLOCKQUOTE':
       return h(NBlockquote, null, childs);
     case 'PRE':
-      return h(NScrollbar, { xScrollable: true }, () =>
-        h(NCode, {
-          code: nodeList.firstChild!.firstChild!.nodeValue!,
-          hljs,
-          inline: false,
-          language: (nodeList as any).firstChild?.attributes?.class?.value,
-          wordWrap: true,
+      return h(NScrollbar, { xScrollable: true, style: { maxWidth: '90vw' } }, () =>
+        h('pre', {
+          innerHTML: (nodeList as HTMLPreElement).innerHTML,
         }),
       );
     case 'A':
-      console.log(nodeList);
       return h(
         NA,
         { href: (nodeList as HTMLAnchorElement).href },
         () => (nodeList as HTMLAnchorElement).innerText,
       );
     case 'OL':
-      console.log(nodeList);
       return h('ol', { innerHTML: (nodeList as Element).innerHTML }, childs);
     case 'UL':
       return h('ul', { innerHTML: (nodeList as Element).innerHTML }, childs);
     case 'BR':
       return h('br', null, childs);
     case 'CODE':
-      return h(NCode, {
-        code: nodeList.firstChild!.nodeValue!,
-        hljs,
-        inline: true,
-        language: (nodeList as any).attributes?.class?.value,
-        style: { whiteSpace: 'pre-line' },
-      });
+      return h('code', null, (nodeList as any).innerText);
     default:
       console.log(nodeList);
       return Array.from(nodeList.childNodes).map((node) => render(node));
@@ -67,7 +54,16 @@ const parseHtml = (htmlStr: string) => {
   const parser = new DOMParser();
   const dom = parser.parseFromString(htmlStr, 'text/html');
   const renderedChilds = Array.from(dom.childNodes).map((node) => render(node));
-  const ret = h('div', { style: { marginLeft: '0.5rem', marginRight: '0.5rem' } }, renderedChilds);
+  const ret = h(
+    'div',
+    {
+      style: {
+        marginLeft: '0.5rem',
+        marginRight: '0.5rem',
+      },
+    },
+    renderedChilds,
+  );
   console.log(ret);
   return ret;
 };
